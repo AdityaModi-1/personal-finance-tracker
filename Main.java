@@ -1,3 +1,6 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -20,6 +23,15 @@ class Expense{
 public class Main{
     static ArrayList<Expense> expenseList = new ArrayList<>();
 
+    public static void saveData(){
+        try(PrintWriter writer = new PrintWriter(new FileWriter("expenses.txt"))){
+            for(Expense e: expenseList){
+                writer.println(e.description + "," + e.amount + "," + e.category);
+            }
+        } catch (IOException e){
+            System.out.println("Error saving file.");
+        }
+    }
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -46,6 +58,7 @@ public class Main{
                 String cat = scanner.nextLine();
 
                 expenseList.add(new Expense(desc, amount, cat));
+                saveData();
                 System.out.println("Expense Saved!");
             } else if (choice == 2){
                 System.out.println("\n--- Your Expenses ---");
@@ -65,3 +78,4 @@ public class Main{
         scanner.close();
     }
 }
+
