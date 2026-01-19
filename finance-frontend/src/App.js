@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
-  // --- CONFIGURATION ---
-  // If your backend uses "http://localhost:8080/api/predict", change this to 'http://localhost:8080/api'
   const API_BASE_URL = 'http://localhost:8080/api'; 
   // ---------------------
 
-  // State Variables
+
   const [transactions, setTransactions] = useState([]);
   const [prediction, setPrediction] = useState(0);
   const [description, setDescription] = useState('');
@@ -20,7 +18,7 @@ function App() {
     fetch(`${API_BASE_URL}/predict`)
       .then(res => res.json())
       .then(data => {
-        console.log("Prediction received:", data); // Debug log
+        console.log("Prediction received:", data);
         setPrediction(data);
       })
       .catch(err => console.error("Error fetching prediction:", err));
@@ -34,13 +32,11 @@ function App() {
       .catch(err => console.error("Error fetching transactions:", err));
   };
 
-  // --- USE EFFECT (Runs once on load) ---
   useEffect(() => {
     fetchTransactions();
     fetchPrediction();
   }, []);
 
-  // --- HANDLER (Runs when you click Add) ---
   const handleAddTransaction = (e) => {
     e.preventDefault();
 
@@ -67,17 +63,14 @@ function App() {
       // 2. Update List immediately
       setTransactions([...transactions, savedTransaction]);
 
-      // 3. THIS IS KEY: Force AI to re-calculate immediately
       fetchPrediction();
 
-      // 4. Clear inputs
       setDescription('');
       setAmount('');
     })
     .catch(err => console.error("Error adding transaction:", err));
   };
 
-  // --- THE UI (What you see) ---
   return (
     <div className="App" style={{ padding: '20px', fontFamily: 'Arial' }}>
       <h1>💰 AI Finance Tracker</h1>
